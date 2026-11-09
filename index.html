@@ -114,25 +114,6 @@
   }
   section.bloco p { margin-bottom: 14px; font-size: 1.05rem; }
 
-  .tema {
-    display: grid;
-    grid-template-columns: 1fr 170px;
-    gap: 30px;
-    align-items: start;
-  }
-  .ilustra {
-    width: 170px;
-    height: 170px;
-    background: var(--areia);
-    border: 1px solid #d8c29a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--terracota);
-    position: relative;
-  }
-  .ilustra svg { width: 110px; height: 110px; }
-
   .cartoes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -183,6 +164,42 @@
     background: var(--areia);
   }
   .governo p { margin-bottom: 8px; }
+
+  .galeria {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .espaco { margin: 0; }
+  .moldura {
+    aspect-ratio: 4 / 3;
+    border: 2px dashed var(--ocre);
+    background: var(--areia);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8a6a4a;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    overflow: hidden;
+  }
+  .moldura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .espaco figcaption {
+    margin-top: 8px;
+    min-height: 2.6em;
+    padding-left: 8px;
+    border-left: 2px solid var(--ocre);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #6b5340;
+  }
 
   footer {
     text-align: center;
@@ -346,12 +363,11 @@
   .aviso { width: 100%; font-size: 0.8rem; color: var(--areia); opacity: 0.8; }
 
   @media (max-width: 700px) {
-    .tema { grid-template-columns: 1fr; gap: 18px; }
-    .ilustra { order: -1; width: 100%; height: 130px; }
-    .ilustra svg { width: 84px; height: 84px; }
     section.bloco { padding: 48px 18px; }
     section.bloco h2 { font-size: 1.6rem; }
     section.bloco p { font-size: 1rem; }
+    .galeria { gap: 12px; }
+    .espaco figcaption { font-size: 0.82rem; }
     .canto.bl, .canto.br { bottom: 170px; }
     .canto.tl, .canto.tr { top: 10px; }
     .canto.tl { left: 10px; }
@@ -430,32 +446,25 @@
   <button class="btn-repetir" id="repetirSona">Desenhar outra vez</button>
 </header>
 
-<section class="bloco" id="sobre">
+<section class="bloco" id="sobre" data-canto="tl" data-icone="ico-mapa">
   <h2>A província</h2>
-  <div class="tema">
-    <div>
-      <p>
-        A Lunda Norte é uma das <strong>21 províncias</strong> de Angola, situada no nordeste do país.
-        A sua capital é o <strong>Dundo</strong>, também conhecido como Dundo-Chitato.
-        A província foi oficialmente criada a 4 de julho de 1978, pelo Decreto-Lei n.º 84/78,
-        a partir da separação da Lunda Sul.
-      </p>
-      <p>
-        Faz fronteira a norte, leste e nordeste com a República Democrática do Congo,
-        a sudeste e sul com a Lunda Sul e a oeste e sudoeste com a província de Malanje.
-      </p>
-      <div class="cartoes">
-        <div class="cartao"><div class="rotulo">Capital</div><div class="valor">Dundo</div></div>
-        <div class="cartao"><div class="rotulo">Área</div><div class="valor">103 760 km²</div></div>
-        <div class="cartao"><div class="rotulo">Municípios</div><div class="valor">19</div></div>
-        <div class="cartao"><div class="rotulo">População</div><div class="valor">Mais de 1 milhão</div></div>
-        <div class="cartao"><div class="rotulo">Línguas</div><div class="valor">Cokwe e Português</div></div>
-        <div class="cartao"><div class="rotulo">Etnia principal</div><div class="valor">Cokwe</div></div>
-      </div>
-    </div>
-    <figure class="ilustra" data-canto="tl" data-icone="ico-mapa" style="display:flex">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-mapa"/></svg>
-    </figure>
+  <p>
+    A Lunda Norte é uma das <strong>21 províncias</strong> de Angola, situada no nordeste do país.
+    A sua capital é o <strong>Dundo</strong>, também conhecido como Dundo-Chitato.
+    A província foi oficialmente criada a 4 de julho de 1978, pelo Decreto-Lei n.º 84/78,
+    a partir da separação da Lunda Sul.
+  </p>
+  <p>
+    Faz fronteira a norte, leste e nordeste com a República Democrática do Congo,
+    a sudeste e sul com a Lunda Sul e a oeste e sudoeste com a província de Malanje.
+  </p>
+  <div class="cartoes">
+    <div class="cartao"><div class="rotulo">Capital</div><div class="valor">Dundo</div></div>
+    <div class="cartao"><div class="rotulo">Área</div><div class="valor">103 760 km²</div></div>
+    <div class="cartao"><div class="rotulo">Municípios</div><div class="valor">19</div></div>
+    <div class="cartao"><div class="rotulo">População</div><div class="valor">Mais de 1 milhão</div></div>
+    <div class="cartao"><div class="rotulo">Línguas</div><div class="valor">Cokwe e Português</div></div>
+    <div class="cartao"><div class="rotulo">Etnia principal</div><div class="valor">Cokwe</div></div>
   </div>
   <div class="lista">
     <span>Cambulo</span><span>Capenda Camulemba</span><span>Caungula</span><span>Chitato</span>
@@ -464,135 +473,141 @@
     <span>Camaxilo</span><span>Luangue</span><span>Luremo</span><span>Canzar</span>
     <span>Cassanje Calucala</span><span>Mussungue</span><span>Cafunfu</span>
   </div>
-</section>
 
 <section class="bloco" id="governo" data-canto="tr" data-icone="ico-governo">
   <h2>Governo provincial</h2>
-  <div class="tema">
-    <div class="governo">
-      <p><strong>Governadora:</strong> Filomena Elizabete Chitula Miza Aires, nomeada a 15 de julho de 2024.</p>
-      <p><strong>Vice-governador para o setor político, social e económico:</strong> Faustino Alteres Teresa Malenga.</p>
-      <p><strong>Vice-governador para os serviços técnicos e infraestruturas:</strong> Domingos Dala.</p>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-governo"/></svg>
+  <div class="governo">
+    <p><strong>Governadora:</strong> Filomena Elizabete Chitula Miza Aires, nomeada a 15 de julho de 2024.</p>
+    <p><strong>Vice-governador para o setor político, social e económico:</strong> Faustino Alteres Teresa Malenga.</p>
+    <p><strong>Vice-governador para os serviços técnicos e infraestruturas:</strong> Domingos Dala.</p>
+  </div>
+
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="Governadora.jpg" alt=""></span></div>
+      <figcaption>Governadora da Província da Lunda Norte Filomena Elizabete Chitula Miza Aires</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="bloco" id="historia" data-canto="bl" data-icone="ico-historia">
   <h2>História</h2>
-  <div class="tema">
-    <div>
-      <p>
-        Por volta de 1590, o rei Muanta Gandi uniu a região leste de Angola, o norte do Cuando-Cubango
-        e partes do atual Congo e da Zâmbia sob o reino Lunda. Esse Estado tornou-se, no século XVII,
-        o Império Lunda, que mais tarde se fragmentou em estados confederados após disputas pelo trono.
-      </p>
-      <p>
-        Com a Conferência de Berlim, as potências coloniais dividiram definitivamente o território dos lundas.
-        Nas terras da atual Lunda Norte formaram-se os antigos Estados de Capenda e de Muteba.
-      </p>
-      <ul class="linha-tempo">
-        <li><strong>1590</strong> &mdash; Unificação dos territórios lundas sob o rei Muanta Gandi.</li>
-        <li><strong>1912</strong> &mdash; Descoberta de diamantes no ribeiro Mussalala e início da exploração mineira no rio Chicapa.</li>
-        <li><strong>1917</strong> &mdash; A Diamang assume o acampamento de Dundo-Chitato, que se torna uma cidade operária.</li>
-        <li><strong>1970</strong> &mdash; A guerra atinge a região com a "Frente Leste" e a "Rota Agostinho Neto".</li>
-        <li><strong>1978</strong> &mdash; Criação oficial da província da Lunda Norte; capital provisória em Lucapa.</li>
-        <li><strong>2000</strong> &mdash; O Dundo é ratificado como capital definitiva da província.</li>
-      </ul>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-historia"/></svg>
+  <p>
+    Por volta de 1590, o rei Muanta Gandi uniu a região leste de Angola, o norte do Cuando-Cubango
+    e partes do atual Congo e da Zâmbia sob o reino Lunda. Esse Estado tornou-se, no século XVII,
+    o Império Lunda, que mais tarde se fragmentou em estados confederados após disputas pelo trono.
+  </p>
+  <p>
+    Com a Conferência de Berlim, as potências coloniais dividiram definitivamente o território dos lundas.
+    Nas terras da atual Lunda Norte formaram-se os antigos Estados de Capenda e de Muteba.
+  </p>
+  <ul class="linha-tempo">
+    <li><strong>1590</strong> &mdash; Unificação dos territórios lundas sob o rei Muanta Gandi.</li>
+    <li><strong>1912</strong> &mdash; Descoberta de diamantes no ribeiro Mussalala e início da exploração mineira no rio Chicapa.</li>
+    <li><strong>1917</strong> &mdash; A Diamang assume o acampamento de Dundo-Chitato, que se torna uma cidade operária.</li>
+    <li><strong>1970</strong> &mdash; A guerra atinge a região com a "Frente Leste" e a "Rota Agostinho Neto".</li>
+    <li><strong>1978</strong> &mdash; Criação oficial da província da Lunda Norte; capital provisória em Lucapa.</li>
+    <li><strong>2000</strong> &mdash; O Dundo é ratificado como capital definitiva da província.</li>
+  </ul>
+
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="Povo Lunda.jpg" alt=""></span></div>
+      <figcaption>Povo Lunda</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="bloco" id="cultura" data-canto="br" data-icone="ico-sona">
   <h2>Cultura e tradição</h2>
-  <div class="tema">
-    <div>
-      <p>
-        A população é maioritariamente <strong>cokwe (chócue)</strong>, e a língua cokwe convive com o português.
-        A região recebeu também refugiados da República Democrática do Congo, sobretudo das etnias lunda,
-        bena-lulua e pende, o que fez da província um espaço de encontro de culturas.
-      </p>
-      <p>
-        As <strong>sonas</strong> são desenhos geométricos traçados na areia, feitos de pontos e de uma única
-        linha contínua. Transmitidos oralmente de geração em geração, são património imaterial do povo cokwe.
-        Toque na sona no topo da página para ler a descrição completa.
-      </p>
-      <p>
-        A gastronomia e os festivais culturais do Dundo, como o Centro Cultural do Dundo, mantêm viva
-        a identidade local.
-      </p>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-sona"/></svg>
+  <p>
+    A população é maioritariamente <strong>cokwe (chócue)</strong>, e a língua cokwe convive com o português.
+    A região recebeu também refugiados da República Democrática do Congo, sobretudo das etnias lunda,
+    bena-lulua e pende, o que fez da província um espaço de encontro de culturas.
+  </p>
+  <p>
+    As <strong>sonas</strong> são desenhos geométricos traçados na areia, feitos de pontos e de uma única
+    linha contínua. Transmitidos oralmente de geração em geração, são património imaterial do povo cokwe.
+    Toque na sona no topo da página para ler a descrição completa.
+  </p>
+  <p>
+    A gastronomia e os festivais culturais do Dundo, como o Centro Cultural do Dundo, mantêm viva
+    a identidade local.
+  </p>
+
+  
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="WhatsApp Image 2026-11-08 at 10.07.15 PM.jpeg" alt=""></span></div>
+      <figcaption>Sona</figcaption>
+    </figure>
+    <figure class="espaco">
+      <div class="moldura"><span><img src="cokwe.png" alt=""></span></div>
+      <figcaption>Festival das Tradições na LundaNorte apresenta potenciais da cultura Cokwe</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="bloco" id="geografia" data-canto="tl" data-icone="ico-rio">
   <h2>Geografia e clima</h2>
-  <div class="tema">
-    <div>
-      <p>
-        A província é atravessada por rios importantes, todos tributários do Cassai, um dos maiores afluentes
-        da bacia do Congo: o <strong>Cassai</strong>, o <strong>Luachimo</strong>, o <strong>Cuango</strong>,
-        o Chicapa, o Lui, o Cuílo e o Lóvua, entre outros.
-      </p>
-      <p>
-        O relevo é dominado pelo Planalto da Lunda, com altitudes médias de cerca de 900 metros.
-        A paisagem alterna entre mosaico de floresta e savana, a norte e leste, e florestas de miombo, a oeste.
-      </p>
-      <p>
-        O clima predominante é o tropical de savana, com temperatura média de cerca de 27&nbsp;ºC e chuvas
-        que podem ser torrenciais. A precipitação média anual ronda os 1 400 mm.
-      </p>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-rio"/></svg>
+  <p>
+    A província é atravessada por rios importantes, todos tributários do Cassai, um dos maiores afluentes
+    da bacia do Congo: o <strong>Cassai</strong>, o <strong>Luachimo</strong>, o <strong>Cuango</strong>,
+    o Chicapa, o Lui, o Cuílo e o Lóvua, entre outros.
+  </p>
+  <p>
+    O relevo é dominado pelo Planalto da Lunda, com altitudes médias de cerca de 900 metros.
+    A paisagem alterna entre mosaico de floresta e savana, a norte e leste, e florestas de miombo, a oeste.
+  </p>
+  <p>
+    O clima predominante é o tropical de savana, com temperatura média de cerca de 27&nbsp;ºC e chuvas
+    que podem ser torrenciais. A precipitação média anual ronda os 1 400 mm.
+  </p>
+
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="Angola_Provinces_Lunda_Norte_250px.png" alt=""></span></div>
+      <figcaption>Localização da Lunda norte no mapa de Angola</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="bloco" id="economia" data-canto="tr" data-icone="ico-diamante">
   <h2>Economia</h2>
-  <div class="tema">
-    <div>
-      <p>
-        A mineração é uma base importante da economia provincial, sobretudo a extração de <strong>diamantes</strong> e de ouro.
-        Destacam-se as minas de Luó, Lucapa, Cachimo e Cambulo.
-      </p>
-      <p>
-        Na agricultura produzem-se arroz, mandioca, milho, amendoim, batata-doce e abacaxi. A pecuária é relevante,
-        e os rios sustentam a pesca. No Dundo concentram-se o comércio, os serviços e a indústria de alimentos,
-        bebidas e construção civil. Novos projetos procuram diversificar a economia da região.
-      </p>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-diamante"/></svg>
+  <p>
+    A mineração é uma base importante da economia provincial, sobretudo a extração de <strong>diamantes</strong> e de ouro.
+    Destacam-se as minas de Luó, Lucapa, Cachimo e Cambulo.
+  </p>
+  <p>
+    Na agricultura produzem-se arroz, mandioca, milho, amendoim, batata-doce e abacaxi. A pecuária é relevante,
+    e os rios sustentam a pesca. No Dundo concentram-se o comércio, os serviços e a indústria de alimentos,
+    bebidas e construção civil. Novos projetos procuram diversificar a economia da região.
+  </p>
+
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="5df11c520773974dcb8e7e29_Catoca.jpeg" alt=""></span></div>
+      <figcaption>Diamantes</figcaption>
     </figure>
   </div>
 </section>
 
 <section class="bloco" id="educacao" data-canto="bl" data-icone="ico-livro">
   <h2>Educação e extensão</h2>
-  <div class="tema">
-    <div>
-      <p>
-        A guerra destruiu grande parte das escolas e universidades da região. Ainda hoje há carência de salas e de
-        professores qualificados, e o Governo procura reconstruir e expandir a rede de ensino.
-      </p>
-      <p>
-        A Escola Superior Pedagógica da Lunda-Norte, ligada à <a href="https://ulan.edu.ao/" target="_blank">Universidade Lueji A'Nkonde</a>, tem levado os sona
-        às escolas e à comunidade através de aulas, palestras, oficinas e entrevistas. No Dundo funciona também
-        o Instituto Médio Politécnico 28 de Agosto.
-      </p>
-    </div>
-    <figure class="ilustra">
-      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-livro"/></svg>
+  <p>
+    A guerra destruiu grande parte das escolas e universidades da região. Ainda hoje há carência de salas e de
+    professores qualificados, e o Governo procura reconstruir e expandir a rede de ensino.
+  </p>
+  <p>
+    A Escola Superior Pedagógica da Lunda-Norte, ligada à <a href="https://ulan.edu.ao/" target="_blank">Universidade Lueji A'Nkonde</a>, tem levado os sona
+    às escolas e à comunidade através de aulas, palestras, oficinas e entrevistas. No Dundo funciona também
+    o Instituto Médio Politécnico 28 de Agosto.
+  </p>
+
+  <div class="galeria">
+    <figure class="espaco">
+      <div class="moldura"><span><img src="274859474_100798922560581_1520873129785901826_n.jpg" alt=""></span></div>
+      <figcaption>Universidade Lueji A'Nkonde</figcaption>
     </figure>
   </div>
 </section>
