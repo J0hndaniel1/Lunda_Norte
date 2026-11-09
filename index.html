@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lunda Norte</title>
+<style>
+  :root {
+    --creme: #F5ECD9;
+    --papel: #F7EDD9;
+    --tinta: #2A1B10;
+    --linha: #5E4A24;
+    --ocre: #C07A2C;
+    --terracota: #B5573A;
+    --areia: #E4D3B0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: var(--creme);
+    color: var(--tinta);
+    line-height: 1.7;
+    padding-bottom: 130px;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 40%, #F9F1DE 0%, var(--creme) 70%);
+  }
+  .sona-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    width: min(560px, 88vw);
+    transition: transform 0.3s ease;
+  }
+  .sona-btn:hover { transform: scale(1.02); }
+  .sona-btn:focus-visible { outline: 2px dashed var(--ocre); outline-offset: 8px; }
+  .sona-btn svg { width: 100%; height: auto; display: block; }
+  .dica {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8a6a4a;
+    opacity: 0;
+    transition: opacity 1s ease 0.4s;
+  }
+  .pronto .dica { opacity: 1; }
+
+  .hero h1,
+  .hero .subtitulo,
+  .hero .seta,
+  .hero .btn-repetir {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+  }
+  .hero h1 {
+    margin-top: 26px;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    letter-spacing: 0.08em;
+    font-weight: normal;
+  }
+  .hero .subtitulo {
+    margin-top: 10px;
+    font-style: italic;
+    color: var(--terracota);
+    transition-delay: 0.25s;
+  }
+  .hero .seta {
+    margin-top: 30px;
+    font-size: 1.4rem;
+    color: var(--ocre);
+    transition-delay: 0.5s;
+  }
+  .hero .btn-repetir {
+    margin-top: 14px;
+    background: none;
+    border: 1px solid var(--ocre);
+    color: var(--ocre);
+    padding: 6px 16px;
+    font-family: inherit;
+    cursor: pointer;
+    transition-delay: 0.5s;
+  }
+  .hero .btn-repetir:hover { background: var(--ocre); color: var(--creme); }
+  .pronto h1, .pronto .subtitulo, .pronto .seta, .pronto .btn-repetir {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  section.bloco {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 64px 24px;
+    border-top: 1px dotted var(--ocre);
+  }
+  section.bloco h2 {
+    font-weight: normal;
+    font-size: 2rem;
+    margin-bottom: 18px;
+    color: var(--terracota);
+    letter-spacing: 0.04em;
+  }
+  section.bloco p { margin-bottom: 14px; font-size: 1.05rem; }
+
+  .tema {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 30px;
+    align-items: start;
+  }
+  .ilustra {
+    width: 170px;
+    height: 170px;
+    background: var(--areia);
+    border: 1px solid #d8c29a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--terracota);
+    position: relative;
+  }
+  .ilustra svg { width: 110px; height: 110px; }
+
+  .cartoes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .cartao {
+    background: var(--areia);
+    padding: 18px;
+    border-left: 4px solid var(--terracota);
+  }
+  .cartao .rotulo {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--terracota);
+  }
+  .cartao .valor { font-size: 1.25rem; margin-top: 4px; }
+
+  .linha-tempo { list-style: none; margin-top: 16px; }
+  .linha-tempo li {
+    position: relative;
+    padding: 0 0 20px 28px;
+    border-left: 1px solid var(--ocre);
+  }
+  .linha-tempo li::before {
+    content: "";
+    position: absolute;
+    left: -6px; top: 6px;
+    width: 11px; height: 11px;
+    background: var(--ocre);
+    transform: rotate(45deg);
+  }
+  .linha-tempo strong { color: var(--terracota); font-weight: normal; }
+
+  .lista {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+  }
+  .lista span {
+    border: 1px solid var(--tinta);
+    padding: 3px 11px;
+    font-size: 0.9rem;
+  }
+
+  .governo {
+    margin-top: 6px;
+    padding: 20px 24px;
+    background: var(--areia);
+  }
+  .governo p { margin-bottom: 8px; }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 0.9rem;
+    color: #6b5340;
+    border-top: 1px dotted var(--ocre);
+  }
+
+  .canto {
+    position: fixed;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    z-index: 5;
+    pointer-events: none;
+    max-width: 40vw;
+  }
+  .canto.tl { top: 14px; left: 14px; }
+  .canto.tr { top: 14px; right: 14px; justify-content: flex-end; }
+  .canto.bl { bottom: 96px; left: 14px; }
+  .canto.br { bottom: 96px; right: 14px; justify-content: flex-end; }
+  .ic {
+    width: 48px;
+    height: 48px;
+    color: var(--ocre);
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .ic.visto { opacity: 0.75; transform: scale(1) rotate(0); }
+
+  dialog {
+    border: 0;
+    background: var(--papel);
+    color: var(--tinta);
+    width: min(720px, calc(100vw - 28px));
+    max-height: 86vh;
+    padding: 0;
+    border-top: 4px solid var(--terracota);
+  }
+  dialog::backdrop { background: rgba(42, 27, 16, 0.65); }
+  .modal-corpo { padding: 26px 30px 34px; overflow: auto; max-height: 86vh; }
+  .modal-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .modal-corpo h2 {
+    font-weight: normal;
+    font-size: 1.9rem;
+    color: var(--terracota);
+  }
+  .modal-corpo .sub {
+    font-style: italic;
+    color: #6b5340;
+    margin-bottom: 18px;
+  }
+  .fechar {
+    background: none;
+    border: 1px solid var(--ocre);
+    color: var(--ocre);
+    padding: 4px 12px;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .fechar:hover { background: var(--ocre); color: var(--creme); }
+  .modal-corpo h3 {
+    font-weight: normal;
+    font-size: 1.15rem;
+    margin: 20px 0 6px;
+    color: var(--tinta);
+    border-left: 3px solid var(--ocre);
+    padding-left: 10px;
+  }
+  .modal-corpo p { font-size: 1rem; margin-bottom: 8px; }
+  .fonte {
+    margin-top: 24px;
+    font-size: 0.85rem;
+    color: #6b5340;
+    border-top: 1px dotted var(--ocre);
+    padding-top: 12px;
+  }
+
+  .player {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(42, 27, 16, 0.96);
+    color: var(--creme);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  .player .titulo-musica {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    min-width: 140px;
+    color: var(--areia);
+  }
+  .btn {
+    background: none;
+    border: 1px solid var(--ocre);
+    color: var(--creme);
+    width: 40px; height: 40px;
+    transform: rotate(45deg);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .btn > span { transform: rotate(-45deg); display: inline-block; }
+  .btn:hover:not(:disabled) { background: var(--ocre); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .barra {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .barra input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    --p: 0%;
+    background:
+      linear-gradient(to right, var(--ocre) var(--p), transparent var(--p)),
+      repeating-linear-gradient(to right, #8a6a4a 0 2px, transparent 2px 9px);
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .barra input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: var(--creme);
+    border: 1px solid var(--ocre);
+    transform: rotate(45deg);
+  }
+  .barra input[type=range]::-moz-range-thumb {
+    width: 12px; height: 12px;
+    background: var(--creme);
+    border: 1px solid var(--ocre);
+    transform: rotate(45deg);
+    border-radius: 0;
+  }
+  .tempo { font-size: 0.8rem; min-width: 84px; text-align: right; color: var(--areia); }
+
+  .volume { display: flex; align-items: center; gap: 8px; }
+  .volume .valor-vol { font-size: 0.8rem; min-width: 40px; text-align: center; color: var(--areia); }
+  .aviso { width: 100%; font-size: 0.8rem; color: var(--areia); opacity: 0.8; }
+
+  @media (max-width: 700px) {
+    .tema { grid-template-columns: 1fr; gap: 18px; }
+    .ilustra { order: -1; width: 100%; height: 130px; }
+    .ilustra svg { width: 84px; height: 84px; }
+    section.bloco { padding: 48px 18px; }
+    section.bloco h2 { font-size: 1.6rem; }
+    section.bloco p { font-size: 1rem; }
+    .canto.bl, .canto.br { bottom: 170px; }
+    .canto.tl, .canto.tr { top: 10px; }
+    .canto.tl { left: 10px; }
+    .canto.tr { right: 10px; }
+    .canto.bl { left: 10px; }
+    .canto.br { right: 10px; }
+    .ic { width: 32px; height: 32px; }
+    body { padding-bottom: 190px; }
+    .player { padding: 12px 14px; gap: 10px; }
+    .player .titulo-musica { width: 100%; min-width: 0; }
+    .barra { order: 3; width: 100%; min-width: 0; }
+    .modal-corpo { padding: 22px 20px 28px; }
+    .modal-corpo h2 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+  <defs>
+    <symbol id="ico-mapa" viewBox="0 0 120 120">
+      <path d="M22 30 L48 16 L80 24 L98 44 L90 70 L100 92 L66 104 L40 92 L18 98 L26 66 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <circle cx="66" cy="60" r="6" fill="currentColor"/>
+    </symbol>
+    <symbol id="ico-governo" viewBox="0 0 120 120">
+      <path d="M30 14 V106" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <path d="M30 20 Q52 6 72 22 Q86 34 100 24 V64 Q86 74 72 62 Q52 46 30 64 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="ico-historia" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 106 H106"/>
+        <path d="M22 96 H98"/>
+        <path d="M60 18 L98 44 H22 Z"/>
+        <path d="M32 44 V96 M50 44 V96 M70 44 V96 M88 44 V96"/>
+      </g>
+    </symbol>
+    <symbol id="ico-sona" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round">
+        <path d="M60 14 L106 60 L60 106 L14 60 Z"/>
+        <path d="M60 36 L84 60 L60 84 L36 60 Z"/>
+      </g>
+      <g fill="currentColor">
+        <circle cx="60" cy="36" r="4"/><circle cx="84" cy="60" r="4"/>
+        <circle cx="60" cy="84" r="4"/><circle cx="36" cy="60" r="4"/>
+      </g>
+    </symbol>
+    <symbol id="ico-rio" viewBox="0 0 120 120">
+      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+        <path d="M12 40 q12 -12 24 0 t24 0 t24 0 t24 0"/>
+        <path d="M12 62 q12 -12 24 0 t24 0 t24 0 t24 0"/>
+        <path d="M12 84 q12 -12 24 0 t24 0 t24 0 t24 0"/>
+      </g>
+    </symbol>
+    <symbol id="ico-diamante" viewBox="0 0 120 120">
+      <path d="M60 14 L100 56 L60 106 L20 56 Z M20 56 H100 M60 14 L40 56 L60 106 L80 56 Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="ico-livro" viewBox="0 0 120 120">
+      <path d="M60 30 C46 22 26 22 14 28 V96 C26 90 46 90 60 98 C74 90 94 90 106 96 V28 C94 22 74 22 60 30 Z M60 30 V98" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="canto tl" aria-hidden="true"></div>
+<div class="canto tr" aria-hidden="true"></div>
+<div class="canto bl" aria-hidden="true"></div>
+<div class="canto br" aria-hidden="true"></div>
+
+<header class="hero" id="topo">
+  <button class="sona-btn" id="abrirSona" aria-label="Ver a descrição da sona">
+    <svg id="sona" viewBox="0 0 1084 921" role="img" aria-label="Sona da Lunda Norte a ser desenhada"></svg>
+  </button>
+  <p class="dica">toque na sona</p>
+  <h1>Lunda Norte</h1>
+  <p class="subtitulo">Terra de rios, diamantes e memória &mdash; Angola</p>
+  <p class="seta">&darr;</p>
+  <button class="btn-repetir" id="repetirSona">Desenhar outra vez</button>
+</header>
+
+<section class="bloco" id="sobre">
+  <h2>A província</h2>
+  <div class="tema">
+    <div>
+      <p>
+        A Lunda Norte é uma das <strong>21 províncias</strong> de Angola, situada no nordeste do país.
+        A sua capital é o <strong>Dundo</strong>, também conhecido como Dundo-Chitato.
+        A província foi oficialmente criada a 4 de julho de 1978, pelo Decreto-Lei n.º 84/78,
+        a partir da separação da Lunda Sul.
+      </p>
+      <p>
+        Faz fronteira a norte, leste e nordeste com a República Democrática do Congo,
+        a sudeste e sul com a Lunda Sul e a oeste e sudoeste com a província de Malanje.
+      </p>
+      <div class="cartoes">
+        <div class="cartao"><div class="rotulo">Capital</div><div class="valor">Dundo</div></div>
+        <div class="cartao"><div class="rotulo">Área</div><div class="valor">103 760 km²</div></div>
+        <div class="cartao"><div class="rotulo">Municípios</div><div class="valor">19</div></div>
+        <div class="cartao"><div class="rotulo">População</div><div class="valor">Mais de 1 milhão</div></div>
+        <div class="cartao"><div class="rotulo">Línguas</div><div class="valor">Cokwe e Português</div></div>
+        <div class="cartao"><div class="rotulo">Etnia principal</div><div class="valor">Cokwe</div></div>
+      </div>
+    </div>
+    <figure class="ilustra" data-canto="tl" data-icone="ico-mapa" style="display:flex">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-mapa"/></svg>
+    </figure>
+  </div>
+  <div class="lista">
+    <span>Cambulo</span><span>Capenda Camulemba</span><span>Caungula</span><span>Chitato</span>
+    <span>Cuango</span><span>Cuílo</span><span>Lubalo</span><span>Lucapa</span>
+    <span>Lóvua</span><span>Xá-Muteba</span><span>Dundo</span><span>Xá Cassau</span>
+    <span>Camaxilo</span><span>Luangue</span><span>Luremo</span><span>Canzar</span>
+    <span>Cassanje Calucala</span><span>Mussungue</span><span>Cafunfu</span>
+  </div>
+</section>
+
+<section class="bloco" id="governo" data-canto="tr" data-icone="ico-governo">
+  <h2>Governo provincial</h2>
+  <div class="tema">
+    <div class="governo">
+      <p><strong>Governadora:</strong> Filomena Elizabete Chitula Miza Aires, nomeada a 15 de julho de 2024.</p>
+      <p><strong>Vice-governador para o setor político, social e económico:</strong> Faustino Alteres Teresa Malenga.</p>
+      <p><strong>Vice-governador para os serviços técnicos e infraestruturas:</strong> Domingos Dala.</p>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-governo"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="bloco" id="historia" data-canto="bl" data-icone="ico-historia">
+  <h2>História</h2>
+  <div class="tema">
+    <div>
+      <p>
+        Por volta de 1590, o rei Muanta Gandi uniu a região leste de Angola, o norte do Cuando-Cubango
+        e partes do atual Congo e da Zâmbia sob o reino Lunda. Esse Estado tornou-se, no século XVII,
+        o Império Lunda, que mais tarde se fragmentou em estados confederados após disputas pelo trono.
+      </p>
+      <p>
+        Com a Conferência de Berlim, as potências coloniais dividiram definitivamente o território dos lundas.
+        Nas terras da atual Lunda Norte formaram-se os antigos Estados de Capenda e de Muteba.
+      </p>
+      <ul class="linha-tempo">
+        <li><strong>1590</strong> &mdash; Unificação dos territórios lundas sob o rei Muanta Gandi.</li>
+        <li><strong>1912</strong> &mdash; Descoberta de diamantes no ribeiro Mussalala e início da exploração mineira no rio Chicapa.</li>
+        <li><strong>1917</strong> &mdash; A Diamang assume o acampamento de Dundo-Chitato, que se torna uma cidade operária.</li>
+        <li><strong>1970</strong> &mdash; A guerra atinge a região com a "Frente Leste" e a "Rota Agostinho Neto".</li>
+        <li><strong>1978</strong> &mdash; Criação oficial da província da Lunda Norte; capital provisória em Lucapa.</li>
+        <li><strong>2000</strong> &mdash; O Dundo é ratificado como capital definitiva da província.</li>
+      </ul>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-historia"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="bloco" id="cultura" data-canto="br" data-icone="ico-sona">
+  <h2>Cultura e tradição</h2>
+  <div class="tema">
+    <div>
+      <p>
+        A população é maioritariamente <strong>cokwe (chócue)</strong>, e a língua cokwe convive com o português.
+        A região recebeu também refugiados da República Democrática do Congo, sobretudo das etnias lunda,
+        bena-lulua e pende, o que fez da província um espaço de encontro de culturas.
+      </p>
+      <p>
+        As <strong>sonas</strong> são desenhos geométricos traçados na areia, feitos de pontos e de uma única
+        linha contínua. Transmitidos oralmente de geração em geração, são património imaterial do povo cokwe.
+        Toque na sona no topo da página para ler a descrição completa.
+      </p>
+      <p>
+        A gastronomia e os festivais culturais do Dundo, como o Centro Cultural do Dundo, mantêm viva
+        a identidade local.
+      </p>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-sona"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="bloco" id="geografia" data-canto="tl" data-icone="ico-rio">
+  <h2>Geografia e clima</h2>
+  <div class="tema">
+    <div>
+      <p>
+        A província é atravessada por rios importantes, todos tributários do Cassai, um dos maiores afluentes
+        da bacia do Congo: o <strong>Cassai</strong>, o <strong>Luachimo</strong>, o <strong>Cuango</strong>,
+        o Chicapa, o Lui, o Cuílo e o Lóvua, entre outros.
+      </p>
+      <p>
+        O relevo é dominado pelo Planalto da Lunda, com altitudes médias de cerca de 900 metros.
+        A paisagem alterna entre mosaico de floresta e savana, a norte e leste, e florestas de miombo, a oeste.
+      </p>
+      <p>
+        O clima predominante é o tropical de savana, com temperatura média de cerca de 27&nbsp;ºC e chuvas
+        que podem ser torrenciais. A precipitação média anual ronda os 1 400 mm.
+      </p>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-rio"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="bloco" id="economia" data-canto="tr" data-icone="ico-diamante">
+  <h2>Economia</h2>
+  <div class="tema">
+    <div>
+      <p>
+        A mineração é uma base importante da economia provincial, sobretudo a extração de <strong>diamantes</strong> e de ouro.
+        Destacam-se as minas de Luó, Lucapa, Cachimo e Cambulo.
+      </p>
+      <p>
+        Na agricultura produzem-se arroz, mandioca, milho, amendoim, batata-doce e abacaxi. A pecuária é relevante,
+        e os rios sustentam a pesca. No Dundo concentram-se o comércio, os serviços e a indústria de alimentos,
+        bebidas e construção civil. Novos projetos procuram diversificar a economia da região.
+      </p>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-diamante"/></svg>
+    </figure>
+  </div>
+</section>
+
+<section class="bloco" id="educacao" data-canto="bl" data-icone="ico-livro">
+  <h2>Educação e extensão</h2>
+  <div class="tema">
+    <div>
+      <p>
+        A guerra destruiu grande parte das escolas e universidades da região. Ainda hoje há carência de salas e de
+        professores qualificados, e o Governo procura reconstruir e expandir a rede de ensino.
+      </p>
+      <p>
+        A Escola Superior Pedagógica da Lunda-Norte, ligada à <a href="https://ulan.edu.ao/" target="_blank">Universidade Lueji A'Nkonde</a>, tem levado os sona
+        às escolas e à comunidade através de aulas, palestras, oficinas e entrevistas. No Dundo funciona também
+        o Instituto Médio Politécnico 28 de Agosto.
+      </p>
+    </div>
+    <figure class="ilustra">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#ico-livro"/></svg>
+    </figure>
+  </div>
+</section>
+
+<footer>
+  <p>Fontes: governo.gov.ao, lunda-norte.ao, Wikipédia (pt) e Veloso, J. D. (2020), Revista Angolana de Extensão Universitária.</p>
+  <p style="margin-top:6px;">Lunda Norte &middot; Angola</p>
+</footer>
+
+<dialog id="modal" aria-labelledby="tituloSona">
+  <div class="modal-corpo">
+    <div class="modal-topo">
+      <div>
+        <h2 id="tituloSona">A sona</h2>
+        <p class="sub">Património imaterial do povo cokwe</p>
+      </div>
+      <button class="fechar" id="fecharModal">Fechar</button>
+    </div>
+
+    <h3>O que é</h3>
+    <p>
+      Sona é o plural de lusona, termo que designa a escrita em geral: letras, figuras e desenhos.
+      São a combinação de pontos e traços feitos na areia.
+    </p>
+
+    <h3>Quem a pratica</h3>
+    <p>
+      É uma cultura dos cokwe e de povos relacionados, como os luchazi e os ngangela, que vivem no leste de Angola
+      e em zonas vizinhas, na Zâmbia e na República Democrática do Congo.
+    </p>
+
+    <h3>Como se faz</h3>
+    <p>
+      Os pontos são marcados primeiro na areia e o traço é depois desenhado à volta deles, numa única linha contínua.
+      Os sona são simétricos e monolineares, o que se deve ao rigor com que são feitos.
+    </p>
+
+    <h3>A matemática escondida</h3>
+    <p>
+      Os sona reúnem conceitos matemáticos como a simetria, as transformações isométricas (translação, rotação e reflexão),
+      o máximo divisor comum, a teoria dos grafos e os circuitos eulerianos. Por isso são usados para ensinar matemática,
+      do ensino primário ao superior.
+    </p>
+
+    <h3>Transmissão e registo</h3>
+    <p>
+      O conhecimento passa de geração em geração pela via oral, e o número de conhecedores da arte tem diminuído.
+      Mário Fontinha, antigo conservador do Museu do Dundo, registou 287 sona entre 1945 e 1955, a maior coleção conhecida.
+      Paulo Gerdes publicou a obra <em>Geometria Sona de Angola</em> em três volumes.
+    </p>
+
+    <h3>Tradição</h3>
+    <p>
+      Muitas das experiências vividas com os sona estão ligadas ao mukanda, o ritual de circuncisão do povo cokwe.
+    </p>
+
+    <h3>Ensino e extensão</h3>
+    <p>
+      A Escola Superior Pedagógica da Lunda-Norte levou os sona a aulas, palestras e oficinas, com mais de 1 800 estudantes
+      e cerca de 500 participantes em palestras. Assim, conceitos matemáticos que estavam no abstrato passam a ser
+      vistos no concreto, na própria cultura.
+    </p>
+
+    <p class="fonte">
+      Fonte: Veloso, J. D. (2020). Sona, património imaterial: uma abordagem extensionista.
+      Revista Angolana de Extensão Universitária, v. 2, n. 1, p. 39–52.
+    </p>
+  </div>
+</dialog>
+
+<section class="player" id="player" aria-label="Leitor de música">
+  <button class="btn" id="btnPlay" aria-label="Reproduzir ou pausar" disabled><span>&#9654;</span></button>
+  <div class="titulo-musica" id="tituloMusica">Sem música</div>
+  <div class="barra">
+    <input type="range" id="progresso" min="0" max="100" step="0.1" value="0" aria-label="Progresso da música" disabled>
+    <span class="tempo" id="tempo">0:00 / 0:00</span>
+  </div>
+  <div class="volume">
+    <button class="btn" id="volMenos" aria-label="Diminuir volume" disabled><span>&minus;</span></button>
+    <span class="valor-vol" id="volValor">60%</span>
+    <button class="btn" id="volMais" aria-label="Aumentar volume" disabled><span>+</span></button>
+  </div>
+  <p class="aviso" id="aviso"></p>
+  <audio id="audio" preload="metadata"></audio>
+</section>
+
+<script>
+const MUSICA = {
+  ficheiro: "Yuri da Cunha- Kizuwa ki ngi fwa.mp3",
+  titulo: "Yuri da Cunha- Kizuwa ki ngi fwa",
+  volume: 0.6
+};
+
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.getElementById("sona");
+  const hero = document.querySelector(".hero");
+  const LINHA = "#5E4A24", PAPEL = "#F7EDD9", TERRA = "#B5573A";
+  const CX = 542, CY = 463;
+
+  const PONTOS_CENTRAIS = [
+    [542,250],[501,298],[588,301],[459,338],[547,343],[631,347],[415,380],[502,385],[589,384],[666,387],
+    [375,417],[459,424],[546,424],[627,426],[707,428],[333,463],[412,465],[498,466],[583,463],[666,468],
+    [746,470],[376,506],[457,510],[538,502],[625,508],[707,512],[413,549],[498,548],[584,545],[666,548],
+    [449,584],[537,585],[620,588],[489,630],[574,633],[532,669]
+  ];
+  const PONTAS = [[512, 62], [596, 64]];
+  const BRACOS = [
+    "M 455 322 C 388 250 372 160 430 100 C 462 68 498 60 522 66",
+    "M 629 322 C 696 250 712 160 654 100 C 622 68 586 60 562 66"
+  ];
+  const ROTACOES = [0, 90, 180, 270];
+  const INICIO_BRACOS = 2700, PASSO_BRACOS = 380, DURACAO_BRACO = 1300;
+
+  let temporizador = null;
+
+  function mk(tag, attrs, pai) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (pai) pai.appendChild(e);
+    return e;
+  }
+
+  function anima(e, frames, opcoes) {
+    return e.animate(frames, Object.assign({ fill: "both" }, opcoes));
+  }
+
+  function traco(p, atraso, duracao) {
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    anima(p, [{ strokeDashoffset: L }, { strokeDashoffset: 0 }],
+      { delay: atraso, duration: duracao, easing: "ease-in-out" });
+  }
+
+  function surgir(e, atraso) {
+    anima(e, [{ opacity: 0 }, { opacity: 1 }], { delay: atraso, duration: 260 });
+  }
+
+  function glifoTopo(rot, inicio) {
+    const g = mk("g", { fill: "none", stroke: LINHA, "stroke-width": 3, "stroke-linecap": "round",
+      transform: `rotate(${rot} ${CX} ${CY})` }, svg);
+    traco(mk("path", { d: "M 516 158 H 558" }, g), inicio, 500);
+    traco(mk("path", { d: "M 558 146 L 572 158 L 558 170" }, g), inicio + 300, 400);
+    traco(mk("circle", { cx: 585, cy: 158, r: 12 }, g), inicio + 500, 600);
+  }
+
+  function desenhar() {
+    clearTimeout(temporizador);
+    svg.innerHTML = "";
+    hero.classList.remove("pronto");
+
+    const defs = mk("defs", {}, svg);
+    const cp = mk("clipPath", { id: "areaRede" }, defs);
+    mk("polygon", { points: "300,463 530,265 780,463 530,660" }, cp);
+
+    const rede = mk("g", { fill: "none", stroke: LINHA, "stroke-width": 3, "stroke-linecap": "round",
+      "clip-path": "url(#areaRede)" }, svg);
+    const trilhos = [];
+    for (let k = -14; k <= 14; k++) {
+      const a = 97 + 60 * k;
+      const b = 993 + 60 * k;
+      trilhos.push(`M 0 ${-a} L 1084 ${1084 - a}`);
+      trilhos.push(`M 0 ${b} L 1084 ${b - 1084}`);
+    }
+    trilhos.forEach((d, i) => traco(mk("path", { d }, rede), 1050 + i * 14, 900));
+
+    PONTOS_CENTRAIS.forEach((p, i) => {
+      const c = mk("circle", { cx: p[0], cy: p[1], r: 6.5, fill: TERRA }, svg);
+      surgir(c, i * 22);
+    });
+
+    ROTACOES.forEach((rot, idx) => {
+      const inicio = INICIO_BRACOS + idx * PASSO_BRACOS;
+      const g = mk("g", { transform: `rotate(${rot} ${CX} ${CY})` }, svg);
+      BRACOS.forEach(d => {
+        traco(mk("path", { d, fill: "none", stroke: LINHA, "stroke-width": 30, "stroke-linecap": "round" }, g), inicio, DURACAO_BRACO);
+        traco(mk("path", { d, fill: "none", stroke: PAPEL, "stroke-width": 22, "stroke-linecap": "round" }, g), inicio, DURACAO_BRACO);
+      });
+      PONTAS.forEach(p => {
+        const c = mk("circle", { cx: p[0], cy: p[1], r: 7, fill: TERRA }, g);
+        surgir(c, inicio + DURACAO_BRACO - 100);
+      });
+    });
+
+    const fimBracos = INICIO_BRACOS + 3 * PASSO_BRACOS + DURACAO_BRACO;
+    glifoTopo(0, fimBracos);
+    glifoTopo(180, fimBracos + 200);
+
+    const esq = mk("circle", { cx: 206, cy: 457, r: 14, fill: "none", stroke: LINHA, "stroke-width": 3 }, svg);
+    const dir = mk("path", { d: "M 843 446 Q 868 470 843 496", fill: "none", stroke: LINHA,
+      "stroke-width": 3, "stroke-linecap": "round" }, svg);
+    traco(esq, fimBracos + 300, 600);
+    traco(dir, fimBracos + 400, 500);
+
+    temporizador = setTimeout(() => hero.classList.add("pronto"), fimBracos + 1000);
+  }
+
+  desenhar();
+  document.getElementById("repetirSona").addEventListener("click", desenhar);
+
+  const modal = document.getElementById("modal");
+  document.getElementById("abrirSona").addEventListener("click", () => modal.showModal());
+  document.getElementById("fecharModal").addEventListener("click", () => modal.close());
+  modal.addEventListener("click", e => { if (e.target === modal) modal.close(); });
+})();
+
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const LIMITE_POR_CANTO = 3;
+
+  function adicionarCanto(pos, icone) {
+    const caixa = document.querySelector(".canto." + pos);
+    if (!caixa) return;
+    const s = document.createElementNS(NS, "svg");
+    s.setAttribute("viewBox", "0 0 120 120");
+    s.setAttribute("class", "ic");
+    const u = document.createElementNS(NS, "use");
+    u.setAttribute("href", "#" + icone);
+    s.appendChild(u);
+    caixa.appendChild(s);
+    requestAnimationFrame(() => s.classList.add("visto"));
+    while (caixa.children.length > LIMITE_POR_CANTO) caixa.removeChild(caixa.firstElementChild);
+  }
+
+  const observador = new IntersectionObserver(entradas => {
+    entradas.forEach(en => {
+      if (en.isIntersecting && !en.target.dataset.feito) {
+        en.target.dataset.feito = "1";
+        adicionarCanto(en.target.dataset.canto, en.target.dataset.icone);
+        observador.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll("[data-canto]").forEach(el => observador.observe(el));
+})();
+
+(function () {
+  const audio = document.getElementById("audio");
+  const btnPlay = document.getElementById("btnPlay");
+  const progresso = document.getElementById("progresso");
+  const tempo = document.getElementById("tempo");
+  const volValor = document.getElementById("volValor");
+  const volMenos = document.getElementById("volMenos");
+  const volMais = document.getElementById("volMais");
+  const aviso = document.getElementById("aviso");
+  const titulo = document.getElementById("tituloMusica");
+
+  function formatar(s) {
+    if (!isFinite(s)) return "0:00";
+    const m = Math.floor(s / 60), r = Math.floor(s % 60);
+    return m + ":" + String(r).padStart(2, "0");
+  }
+
+  function atualizarVolume() {
+    volValor.textContent = Math.round(audio.volume * 100) + "%";
+  }
+
+  function ativar(on) {
+    [btnPlay, progresso, volMenos, volMais].forEach(el => el.disabled = !on);
+  }
+
+  if (!MUSICA.ficheiro) {
+    aviso.textContent = "";
+    ativar(false);
+    return;
+  }
+
+  titulo.textContent = MUSICA.titulo;
+  audio.src = MUSICA.ficheiro;
+  audio.volume = MUSICA.volume;
+  atualizarVolume();
+  ativar(true);
+
+  btnPlay.addEventListener("click", () => {
+    if (audio.paused) audio.play();
+    else audio.pause();
+  });
+
+  audio.addEventListener("play",  () => btnPlay.querySelector("span").innerHTML = "&#10074;&#10074;");
+  audio.addEventListener("pause", () => btnPlay.querySelector("span").innerHTML = "&#9654;");
+
+  audio.addEventListener("timeupdate", () => {
+    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+    progresso.value = pct;
+    progresso.style.setProperty("--p", pct + "%");
+    tempo.textContent = formatar(audio.currentTime) + " / " + formatar(audio.duration);
+  });
+
+  progresso.addEventListener("input", () => {
+    if (audio.duration) audio.currentTime = (progresso.value / 100) * audio.duration;
+  });
+
+  function ajustar(delta) {
+    audio.volume = Math.min(1, Math.max(0, +(audio.volume + delta).toFixed(2)));
+    atualizarVolume();
+  }
+  volMenos.addEventListener("click", () => ajustar(-0.1));
+  volMais.addEventListener("click", () => ajustar(0.1));
+})();
+</script>
+</body>
+</html>
